@@ -1,0 +1,31 @@
+{
+  "name": "frontendpublisher_backend",
+  "version": "0.1.0",
+  "description": "\"发布系统后台\"",
+  "main": "app.js",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.5",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.38.0",
+    "ws": "^5.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/Alex-test/publishing_system_backstage.git"
+  },
+  "keywords": [
+    "node",
+    "koa",
+    "mongodb"
+  ],
+  "author": "AlexSong",
+  "license": "ISC"
+}
