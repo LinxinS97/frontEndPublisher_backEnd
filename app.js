@@ -1,5 +1,5 @@
 const Koa = require('koa');
-const WebSocket = require('ws');
+// const WebSocket = require('ws');
 const cors = require('koa2-cors');
 const bodyParser = require('koa-bodyparser');
 const controller = require('./middle/controller');

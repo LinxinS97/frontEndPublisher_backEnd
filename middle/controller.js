@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 function addMapping(router, mapping) {
     console.log(mapping);
@@ -27,7 +28,7 @@ function addMapping(router, mapping) {
 }
 
 function addControllers(router, dir) {
-    let files = fs.readdirSync(__dirname + '/' + dir);
+    let files = fs.readdirSync('./' + dir);
     let js_files = files.filter((f) => {
         return f.endsWith('.js');
     });
@@ -35,7 +36,9 @@ function addControllers(router, dir) {
     
     js_files.forEach(f => {
         console.log(`process controller: ${f}...`);
-        let mapping = require(__dirname + '/' + dir + '/' + f);
+        let mapping = null;
+        // require路径
+        mapping = require(path.resolve(__dirname, '../' + dir + '/' + f));
         addMapping(router, mapping);
     });
 }
