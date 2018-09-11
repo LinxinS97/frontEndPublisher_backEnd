@@ -5,24 +5,24 @@ const execFile = require('child_process').execFile;
 
 module.exports = (exec, execFile, command, file) => {
     if(command) {
-        exec(command, (err, out, err) => {
+        exec(command, (err, stdOut, stdErr) => {
             if(err) {
-                console.log(err);
-                return err;
+                console.log(stdErr);
+                return stdErr;
             } else {
-                console.log(out);
+                console.log(stdOut);
                 return out;
             }
         });
     }
     if(file) {
-        execFile(file, {encoding: 'utf-8'}, (err, out, err) => {
+        execFile(file, {encoding: 'utf-8'}, (err, stdOut, stdErr) => {
             if(err) {
-                console.log(err);
-                return err;
+                console.log(stdErr);
+                return stdErr;
             } else {
-                console.log(out);
-                return out;
+                console.log(stdOut);
+                return stdOut;
             }
         });
     }
