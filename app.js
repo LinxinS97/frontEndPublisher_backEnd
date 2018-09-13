@@ -2,8 +2,9 @@ const Koa = require('koa');
 const WebSocket = require('ws');
 const cors = require('koa2-cors');
 const bodyParser = require('koa-bodyparser');
-const controller = require('./middle/controller');
-const rest = require('./middle/rest');
+const controller = require('./src/middle/controller');
+const rest = require('./src/middle/rest');
+const webSocketAPI = require('./src/websocket/websocket');
 
 const app = new Koa();
 let server = app.listen(8000);
@@ -12,14 +13,13 @@ const WebSocketServer = WebSocket.Server;
 const wss = new WebSocketServer({
     server: server
 });
+// 注册websocket
+wss.on('connection', ws => {
+    console.log(`[SERVER] connection`);
+    webSocketAPI(ws);
+});
 
 app.use(cors());
-
-// 注册websocket
-app.use(async (ctx, next) => {
-    ctx.ws = wss;
-    await next();
-})
 
 // log request URL:
 app.use(async (ctx, next) => {

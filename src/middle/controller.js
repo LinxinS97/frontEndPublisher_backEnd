@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 function addMapping(router, mapping) {
-    console.log(mapping);
     for(let url in mapping){
         if(url.startsWith('GET ')) {
             let path = url.substring(4);
@@ -28,7 +27,7 @@ function addMapping(router, mapping) {
 }
 
 function addControllers(router, dir) {
-    let files = fs.readdirSync('./' + dir);
+    let files = fs.readdirSync('./src/' + dir);
     let js_files = files.filter((f) => {
         return f.endsWith('.js');
     });
@@ -37,7 +36,7 @@ function addControllers(router, dir) {
         console.log(`process controller: ${f}...`);
         let mapping = null;
         // require路径
-        mapping = require(path.resolve(__dirname, '../' + dir + '/' + f));
+        mapping = require(path.resolve('./src/' + dir + '/' + f));
         addMapping(router, mapping);
     });
 }
