@@ -32,7 +32,6 @@ function addControllers(router, dir) {
     let js_files = files.filter((f) => {
         return f.endsWith('.js');
     });
-    console.log(js_files);
     
     js_files.forEach(f => {
         console.log(`process controller: ${f}...`);

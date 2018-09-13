@@ -1,16 +1,32 @@
 const APIError = require('../middle/rest').APIError;
-const gitApi = require('../service/git_api');
+const gitApi = require('../plugin/git_api');
+const command = require('../plugin/command');
 
-module.export = {
-    'POST /api/git/clone': async (ctx, next) => {
-        // TODO: clone项目，并将项目分类保存到db中
-        gitApi.clone(ctx.body.url);
-        ctx.rest('success');
+module.exports = {
+    'POST /api/git/clone': async ctx => {
+        const body = ctx.request.body;
+        await gitApi.clone(body.url);
+        // TODO: 将项目分类保存到db中
+        ctx.rest({
+            status: 'success',
+            name: body.url.split('/').pop().split('.')[0]
+        });
     },
-    'GET /api/git/commits': async (ctx, next) => {
+    'GET /api/git/commits': async ctx => {
         // TODO: 获取所有提交
+        ctx.rest({
+            status: 'success'
+        });
     },
-    'GET /api/git/publish': async (ctx, next) => {
-        // TODO: pull，npm install，发布
+    'POST /api/git/publish': async ctx => {
+        // TODO: 发布专题项目
+        const body = ctx.request.body;
+        await gitApi.pull(body.name);
+        // TODO:发布
+        command('cd ./repos/' + body.name + ' && npm install && npm run build');
+        ctx.rest({
+            status: 'success',
+            name: body.name
+        });
     }
 }
