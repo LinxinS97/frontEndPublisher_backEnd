@@ -9,15 +9,13 @@ const webSocketAPI = require('./src/websocket/websocket');
 const app = new Koa();
 let server = app.listen(8000);
 
+// websocket，同一个端口监听不同的协议
 const WebSocketServer = WebSocket.Server;
 const wss = new WebSocketServer({
     server: server
 });
 // 注册websocket
-wss.on('connection', ws => {
-    console.log(`[SERVER] connection`);
-    webSocketAPI(ws);
-});
+webSocketAPI(wss);
 
 app.use(cors());
 
