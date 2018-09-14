@@ -12,7 +12,7 @@ let server = app.listen(8000);
 // websocket，同一个端口监听不同的协议
 const WebSocketServer = WebSocket.Server;
 const wss = new WebSocketServer({
-    server: server
+    server
 });
 // 注册websocket
 webSocketAPI(wss);

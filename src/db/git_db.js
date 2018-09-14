@@ -1,8 +1,7 @@
 const _connect = require('./connection');
 const assert = require('assert');
-const APIError = require('../middle').APIError;
+const APIError = require('../middle/rest').APIError;
 
-// 将repo数据存入mongodb
 module.exports = {
     async save(obj) {
         await _connect(async db => {
@@ -25,5 +24,22 @@ module.exports = {
             isExist = await collection.findOne({ repoName: name }) === null ? false : true;
         });
         return isExist;
+    },
+    async findAllMain(name) {
+        let result;
+        await _connect(async db => {
+            const collection = db.collection('GitRepo');
+            result = await collection.find({});
+            result = await result.toArray();
+        });
+        return result;
+    },
+    async deleteOne(name) {
+        let res;
+        await _connect(async db => {
+            const collection = db.collection('GitRepo');
+            res = await collection.findOneAndDelete({ repoName: name});
+        });
+        return res;
     }
 }
