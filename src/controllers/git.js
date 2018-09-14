@@ -7,9 +7,14 @@ module.exports = {
     // clone项目
     'POST /api/git/clone': async ctx => {
         const body = ctx.request.body;
+        const name = body.url.split('/').pop().split('.')[0];
+        const isExist = await db.find(name);
+        if(isExist) {
+            throw new APIError('controller:clone error', 'repository is existed');
+        }
         await gitApi.clone(body.url);
         await db.save({
-            repoName: body.url.split('/').pop().split('.')[0],
+            repoName: name,
             url: body.url,
             type: body.type
         });

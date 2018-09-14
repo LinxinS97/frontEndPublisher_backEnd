@@ -11,7 +11,7 @@ module.exports = wss => {
         // TODO: 绑定user
         console.log(`[SERVER] connection`);
         // FIXME: 这里只有广播方法
-        ws.on('message', function(msg){
+        ws.on('message', function(msg) {
             console.log(`[SERVER] Received: ${msg}`);
             // ws.send(`ECHO: ${msg}`, err => {
             //     if(err) console.log(`[SERVER] error: ${err}`);
