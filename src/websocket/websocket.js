@@ -9,7 +9,7 @@ module.exports = wss => {
         // 绑定websocket对象
         ws.wss = wss;
         // TODO: 绑定user
-        console.log(`[SERVER] connection`);
+        console.log('[SERVER] connection');
         // FIXME: 这里只有广播方法
         ws.on('message', function(msg){
             console.log(`[SERVER] Received: ${msg}`);

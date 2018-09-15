@@ -38,6 +38,7 @@ module.exports = {
         const body = ctx.request.body;
         await gitApi.pull(body.name);
         // TODO:发布
+        
         command('cd ./repos/' + body.name + ' && npm install && npm run build');
         ctx.rest({
             status: 'success',
