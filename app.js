@@ -7,12 +7,12 @@ const rest = require('./src/middle/rest');
 const webSocketAPI = require('./src/websocket/websocket');
 
 const app = new Koa();
-let server = app.listen(8000);
+let server = app.listen(80);
 
 // websocket，同一个端口监听不同的协议
 const WebSocketServer = WebSocket.Server;
 const wss = new WebSocketServer({
-    server: server
+    server
 });
 // 注册websocket
 webSocketAPI(wss);

@@ -1,7 +1,7 @@
 {
   "name": "frontendpublisher_backend",
   "version": "0.1.0",
-  "description": "\"发布系统后台\"",
+  "description": "发布系统后台",
   "main": "app.js",
   "dependencies": {
     "cors": "^2.8.4",
