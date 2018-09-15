@@ -11,7 +11,7 @@ module.exports = command => {
             return stdErr;
         } else {
             console.log(stdOut);
-            return out;
+            return stdOut;
         }
     });
 }
