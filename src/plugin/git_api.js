@@ -8,7 +8,7 @@ module.exports = {
         const name = url.split('/').pop().split('.')[0];
         console.log(name);
         try {
-            await Git.Clone(url, path.resolve('./repos/' + name));
+            await Git.Clone(url, path.resolve('./repos/' + name), { ignoreCertErrors: true });
         } catch (e) {
             console.log(e);
             throw new APIError('git:clone error', e);
