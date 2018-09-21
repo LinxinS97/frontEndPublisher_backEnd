@@ -6,9 +6,17 @@ module.exports = {
     async clone(url) {
         // TODO: 新建项目，通过url clone项目并保存到对应地址
         const name = url.split('/').pop().split('.')[0];
-        console.log(name);
+        var opts = {
+            fetchOpts: {
+              callbacks: {
+                certificateCheck: function() {
+                  return 1;
+              }
+            }
+          }
+        };
         try {
-            await Git.Clone(url, path.resolve('./repos/' + name), { ignoreCertErrors: 1 });
+            await Git.Clone(url, path.resolve('./repos/' + name), opts);
         } catch (e) {
             console.log(e);
             throw new APIError('git:clone error', e);
