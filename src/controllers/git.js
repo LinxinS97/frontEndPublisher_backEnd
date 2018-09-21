@@ -57,17 +57,22 @@ module.exports = {
     // 发布一个项目
     'POST /api/git/publish': async ctx => {
         const body = ctx.request.body;
-        await gitApi.pull(body.name);
-        // TODO:发布
-        command('cd ./repos/' + body.name + ' && npm install && npm run build');
+        // await gitApi.pull(body.name);
+        // // TODO:发布
+        // command('cd ./repos/' + body.name + ' && npm install && npm run build');
         const sftp = new Client();
         await sftp.connect({
             host: '173.254.201.221',
-            port: '80',
             username: 'elpis',
             password: 'Stranger2012'
         });
-        console.log(await sftp.list('./'));
+        await sftp.mkdir(body.name);
+        try {
+            await sftp.put('./frontEndPublisher/build', './' + body.name + '/');
+        } catch (e) {
+            console.log(e);
+        }
+        
         ctx.rest({
             status: 'success',
             name: body.name
