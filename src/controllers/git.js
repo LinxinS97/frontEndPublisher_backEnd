@@ -10,6 +10,7 @@ module.exports = {
         const body = ctx.request.body;
         const name = body.url.split('/').pop().split('.')[0];
         const isExist = await db.find(name);
+        console.log(isExist);
         if(isExist) {
             throw new APIError('controller:clone error', 'repository is existed');
         }
@@ -28,8 +29,8 @@ module.exports = {
     'DELETE /api/git/delete/:repo': async ctx => {
         await db.deleteOne(ctx.params.repo);
         // TODO: 删除对应的本地仓库
-        command(`rm -rf ./repos/${ctx.params.repo}`);
-        // command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
+        // command(`rm -rf ./repos/${ctx.params.repo}`);
+        command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
         ctx.rest({
             status: 'success',
         });

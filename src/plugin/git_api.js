@@ -13,7 +13,7 @@ module.exports = {
             throw new APIError('git:clone error', e);
         }
     },
-    getCommit() {
+    async getCommit() {
         // TODO: 获取所有的提交信息，并通过array返回
         
     },
