@@ -30,8 +30,8 @@ module.exports = {
     'DELETE /api/git/delete/:repo': async ctx => {
         await db.deleteOne(ctx.params.repo);
         // TODO: 删除对应的本地仓库
-        // command(`rm -rf ./repos/${ctx.params.repo}`);
-        command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
+        command(`rm -rf ./repos/${ctx.params.repo}`);
+        // command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
         ctx.rest({
             status: 'success',
         });
@@ -60,7 +60,7 @@ module.exports = {
         await gitApi.pull(body.name);
         // TODO:发布
         command('cd ./repos/' + body.name + ' && npm install && npm run build');
-        const sfpt = new Client();
+        const sftp = new Client();
         await sftp.connect({
             host: '173.254.201.221',
             port: '80',
