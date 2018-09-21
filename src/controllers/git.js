@@ -1,4 +1,5 @@
 const APIError = require('../middle/rest').APIError;
+const Client = require('ssh2-sftp-client');
 const gitApi = require('../plugin/git_api');
 const command = require('../plugin/command');
 const db = require('../db/git_db');
@@ -59,6 +60,14 @@ module.exports = {
         await gitApi.pull(body.name);
         // TODO:发布
         command('cd ./repos/' + body.name + ' && npm install && npm run build');
+        const sfpt = new Client();
+        await sftp.connect({
+            host: '173.254.201.221',
+            port: '80',
+            username: 'elpis',
+            password: 'Stranger2012'
+        });
+        console.log(await sftp.list('./'));
         ctx.rest({
             status: 'success',
             name: body.name

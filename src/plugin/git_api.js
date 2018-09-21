@@ -7,13 +7,13 @@ module.exports = {
         // TODO: 新建项目，通过url clone项目并保存到对应地址
         const name = url.split('/').pop().split('.')[0];
         var opts = {
-            fetchOpts: {
-              callbacks: {
-                certificateCheck: function() {
-                  return 1;
-              }
+                fetchOpts: {
+                    callbacks: {
+                        certificateCheck: function() {
+                        return 1;
+                    }
+                }
             }
-          }
         };
         try {
             await Git.Clone(url, path.resolve('./repos/' + name), opts);
