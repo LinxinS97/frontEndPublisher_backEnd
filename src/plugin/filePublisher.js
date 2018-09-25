@@ -19,8 +19,8 @@ const getFile = async (filePath, sftp, remotePath) => {
         const stats = fs.statSync(filedir);
         if(stats.isFile()) {
             try{
-                console.log(filedir);
-                await sftp.put(filedir, remotePath);
+                console.log(filename);
+                await sftp.put(filename, remotePath);
             } catch(e) {
                 console.error(e);
             }
