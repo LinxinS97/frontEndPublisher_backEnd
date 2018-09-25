@@ -33,7 +33,11 @@ module.exports = {
                 certificateCheck: () => 1,
                 credentials: (url, userName) => {
                     console.log(userName);
-                    return Git.Cred.sshKeyFromAgent(userName);
+                    if(username === null && psw === null) {
+                        return Git.Cred.userpassPlaintextNew(username, psw);
+                    } else {
+                        return Git.Cred.userpassPlaintextNew(username, psw);
+                    }
                 }
             });
             await repo.mergeBranches('master', 'origin/master');
