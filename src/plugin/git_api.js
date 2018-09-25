@@ -9,6 +9,7 @@ module.exports = {
         var opts = {
             fetchOpts: {
                 CloneCallbacks: {
+                    certificateCheck: () => 1,
                     credentials: function (url, userName) {
                         return cred.sshKeyFromAgent(userName);
                     }
@@ -16,7 +17,7 @@ module.exports = {
             }
         };
         try {
-            await Git.Clone(url, path.resolve('./repos/' + name), opts, true);
+            await Git.Clone(url, path.resolve('./repos/' + name), opts);
         } catch (e) {
             console.log(e);
             throw new APIError('git:clone error', e);
