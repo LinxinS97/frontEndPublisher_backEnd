@@ -20,14 +20,13 @@ const getFile = async (filePath, sftp, remotePath) => {
         if(stats.isFile()) {
             console.log(filename);
             try{
-                console.log(filedir);
-                console.log(remotePath);
                 await sftp.put(filedir, remotePath);
             } catch(e) {
                 console.error(e);
             }
         }
         if(stats.isDirectory()){
+            console.log(filedir.split('/build')[1]);
             await sftp.mkdir(filedir.split('/build')[1]);
             // 更新目录
             let newPath = './' + remotePath + filedir.split('/build')[1] + '/';
