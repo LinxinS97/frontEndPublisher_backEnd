@@ -8,15 +8,10 @@ module.exports = {
         const name = url.split('/').pop().split('.')[0];
         var opts = {
             fetchOpts: {
-                callbacks: {
-                    credentials: (url, userName) => {
-                        if(username && psw) {
-                            console.log(username, psw);
-                            return Git.Cred.userpassPlaintextNew(username, psw);
-                        } else {
-                            return Git.Cred.sshKeyFromAgent(userName);
-                        }
-                    },
+                remoteCallbacks: {
+                    credentials: function (url, userName) {
+                        return cred.sshKeyFromAgent(userName);
+                    }
                 }
             }
         };
