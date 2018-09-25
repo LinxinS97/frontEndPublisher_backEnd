@@ -26,13 +26,14 @@ module.exports = {
         // TODO: 获取所有的提交信息，并通过array返回
         
     },
-    async pull(name) {
+    async pull(name, username, psw) {
         try {
             const repo = await Git.Repository.open(path.resolve('./repos/' + name));
             await repo.fetchAll({
                 credentials: (url, userName) => {
+                    console.log(userName);
                     return Git.Cred.sshKeyFromAgent(userName);
-                }
+                },
             });
             await repo.mergeBranches('master', 'origin/master');
         } catch (e) {
