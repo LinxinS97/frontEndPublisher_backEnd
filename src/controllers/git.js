@@ -60,6 +60,7 @@ module.exports = {
         const sftp = new Client();
         const body = ctx.request.body;
         const repo = body.repo;
+        console.log(body.username, body.password);
 
         await gitApi.pull(repo, body.username, body.password);
         // TODO:发布

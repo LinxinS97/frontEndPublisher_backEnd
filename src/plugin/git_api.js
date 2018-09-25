@@ -30,11 +30,10 @@ module.exports = {
         try {
             const repo = await Git.Repository.open(path.resolve('./repos/' + name));
             await repo.fetchAll({
-                certificateCheck: () => 1,
                 credentials: (url, userName) => {
-                    console.log(userName);
+                    console.log(username, psw);
                     if(username === null && psw === null) {
-                        return Git.Cred.userpassPlaintextNew(username, psw);
+                        return Git.Cred.sshKeyFromAgent(userName);
                     } else {
                         return Git.Cred.userpassPlaintextNew(username, psw);
                     }
