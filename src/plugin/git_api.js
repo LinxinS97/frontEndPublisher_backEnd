@@ -8,7 +8,7 @@ module.exports = {
         const name = url.split('/').pop().split('.')[0];
         var opts = {
             fetchOpts: {
-                remoteCallbacks: {
+                CloneCallbacks: {
                     credentials: function (url, userName) {
                         return cred.sshKeyFromAgent(userName);
                     }
