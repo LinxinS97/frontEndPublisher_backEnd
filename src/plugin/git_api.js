@@ -31,10 +31,10 @@ module.exports = {
             const repo = await Git.Repository.open(path.resolve('./repos/' + name));
             await repo.fetchAll({
                 credentials: (url, userName) => {
-                    console.log(username, psw);
                     if(username === null && psw === null) {
                         return Git.Cred.sshKeyFromAgent(userName);
                     } else {
+                        console.log(username, psw);
                         return Git.Cred.userpassPlaintextNew(username, psw);
                     }
                 }
