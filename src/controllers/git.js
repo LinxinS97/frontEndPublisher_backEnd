@@ -56,19 +56,22 @@ module.exports = {
         });
     },
     // 发布一个项目
-    'POST /api/git/publish/:repo': async ctx => {
-        // await gitApi.pull(body.name);
-        // // TODO:发布
-        // command('cd ./repos/' + body.name + ' && npm install && npm run build');
-        const repo = ctx.params.repo;
+    'POST /api/git/publish': async ctx => {
         const sftp = new Client();
+        const body = ctx.request.body;
+        const repo = body.repo;
+
+        await gitApi.pull(repo);
+        // TODO:发布
+        command('cd ./repos/' + repo + ' && npm install && npm run build');
+
         await sftp.connect({
             host: '173.254.201.221',
             username: 'elpis',
             password: 'Stranger2012',
         });
         await sftp.mkdir(repo);
-        await filePublisher(path.resolve('repos/' + repo + '/build'), sftp, repo + '/');
+        await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
         ctx.rest({
             status: 'success',
             name: repo
