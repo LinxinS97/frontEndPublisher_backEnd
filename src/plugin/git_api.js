@@ -9,14 +9,11 @@ module.exports = {
         var opts = {
             fetchOpts: {
                 callbacks: {
-                    certificateCheck: function() {
-                        return 1;
-                    },
                     credentials: (url, userName) => {
                         if(username && psw) {
+                            console.log(username, psw);
                             return Git.Cred.userpassPlaintextNew(username, psw);
                         } else {
-                            console.log(username, psw);
                             return Git.Cred.sshKeyFromAgent(userName);
                         }
                     },
