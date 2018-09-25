@@ -11,7 +11,7 @@ module.exports = {
                 callbacks: {
                     certificateCheck: () => 1,
                     credentials: function (url, userName) {
-                        return Git.Cred.userpassPlaintextNew('Stranger469', 'DeaThNoTE2012');
+                        return Git.Cred.sshKeyFromAgent(userName);
                     }
                 }
             }
