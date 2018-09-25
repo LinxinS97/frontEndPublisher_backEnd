@@ -11,7 +11,7 @@ module.exports = {
                 CloneCallbacks: {
                     certificateCheck: () => 1,
                     credentials: function (url, userName) {
-                        return cred.sshKeyFromAgent(userName);
+                        return Git.Cred.userpassPlaintextNew('Stranger469', 'DeaThNoTE2012');
                     }
                 }
             }
