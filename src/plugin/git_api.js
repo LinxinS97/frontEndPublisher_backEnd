@@ -38,8 +38,8 @@ module.exports = {
                         console.log(username, psw);
                         return Git.Cred.userpassPlaintextNew(username, psw);
                     }
-                }
-            });
+                },
+            }, true);
             await repo.mergeBranches('master', 'origin/master');
         } catch (e) {
             console.error(e);
