@@ -16,7 +16,7 @@ module.exports = {
             }
         };
         try {
-            await Git.Clone(url, path.resolve('./repos/' + name), opts);
+            await Git.Clone(url, path.resolve('./repos/' + name), opts, true);
         } catch (e) {
             console.log(e);
             throw new APIError('git:clone error', e);
