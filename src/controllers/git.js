@@ -4,6 +4,7 @@ const gitApi = require('../plugin/git_api');
 const command = require('../plugin/command');
 const db = require('../db/git_db');
 const path = require('path');
+const filePublisher = require('../plugin/filePublisher');
 
 module.exports = {
     // clone项目
@@ -55,27 +56,23 @@ module.exports = {
         });
     },
     // 发布一个项目
-    'POST /api/git/publish': async ctx => {
-        const body = ctx.request.body;
+    'POST /api/git/publish/:repo': async ctx => {
         // await gitApi.pull(body.name);
         // // TODO:发布
         // command('cd ./repos/' + body.name + ' && npm install && npm run build');
+        const repo = ctx.params.repo;
         const sftp = new Client();
         await sftp.connect({
             host: '173.254.201.221',
             username: 'elpis',
-            password: 'Stranger2012'
+            password: 'Stranger2012',
+            port: 22
         });
-        await sftp.mkdir(body.name);
-        try {
-            await sftp.put('./frontEndPublisher/build', './' + body.name + '/');
-        } catch (e) {
-            console.log(e);
-        }
-        
+        await sftp.mkdir(repo);
+        await filePublisher(path.resolve('./repos/' + repo + '/build'), sftp, './' + repo + '/');
         ctx.rest({
             status: 'success',
-            name: body.name
+            name: repo
         });
     }
 }
