@@ -69,7 +69,7 @@ module.exports = {
             port: 22
         });
         await sftp.mkdir(repo);
-        await filePublisher(path.resolve('./repos/' + repo + '/build'), sftp, repo + '/');
+        await filePublisher(path.resolve('repos/' + repo + '/build'), sftp, repo + '/');
         ctx.rest({
             status: 'success',
             name: repo
