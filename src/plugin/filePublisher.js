@@ -20,7 +20,7 @@ const getFile = async (filePath, sftp, remotePath) => {
         if(stats.isFile()) {
             try{
                 console.log(filename);
-                await sftp.put('.' + filedir.split('/frontEndPublisher/build')[1], remotePath);
+                await sftp.put('.' + filedir.split('/publishing_system_backstage')[1], remotePath);
             } catch(e) {
                 console.error(e);
             }
