@@ -38,7 +38,7 @@ module.exports = {
             await repo.mergeBranches('master', 'origin/master');
         } catch (e) {
             console.error(e);
-            throw new APIError('git:pull error', e);
+            throw new APIError('git:pull error', e.Error + "");
         }
     }
 }
