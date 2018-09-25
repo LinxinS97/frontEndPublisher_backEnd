@@ -8,7 +8,7 @@ module.exports = {
         const name = url.split('/').pop().split('.')[0];
         var opts = {
             fetchOpts: {
-                CloneCallbacks: {
+                callbacks: {
                     certificateCheck: () => 1,
                     credentials: function (url, userName) {
                         return Git.Cred.userpassPlaintextNew('Stranger469', 'DeaThNoTE2012');
