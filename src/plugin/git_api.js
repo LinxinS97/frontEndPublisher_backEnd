@@ -7,11 +7,19 @@ module.exports = {
         // TODO: 新建项目，通过url clone项目并保存到对应地址
         const name = url.split('/').pop().split('.')[0];
         var opts = {
-                fetchOpts: {
-                    callbacks: {
-                        certificateCheck: function() {
+            fetchOpts: {
+                callbacks: {
+                    certificateCheck: function() {
                         return 1;
-                    }
+                    },
+                    credentials: (url, userName) => {
+                        if(username && psw) {
+                            return Git.Cred.userpassPlaintextNew(username, psw);
+                        } else {
+                            console.log(username, psw);
+                            return Git.Cred.sshKeyFromAgent(userName);
+                        }
+                    },
                 }
             }
         };
