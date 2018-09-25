@@ -66,7 +66,6 @@ module.exports = {
             host: '173.254.201.221',
             username: 'elpis',
             password: 'Stranger2012',
-            port: 22
         });
         await sftp.mkdir(repo);
         await filePublisher(path.resolve('repos/' + repo + '/build'), sftp, repo + '/');
