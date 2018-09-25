@@ -30,15 +30,16 @@ module.exports = {
         try {
             const repo = await Git.Repository.open(path.resolve('./repos/' + name));
             await repo.fetchAll({
+                certificateCheck: () => 1,
                 credentials: (url, userName) => {
                     console.log(userName);
                     return Git.Cred.sshKeyFromAgent(userName);
-                },
+                }
             });
             await repo.mergeBranches('master', 'origin/master');
         } catch (e) {
             console.error(e);
-            throw new APIError('git:pull error', e.Error + "");
+            throw new APIError('git:pull error', e);
         }
     }
 }
