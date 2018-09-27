@@ -8,7 +8,10 @@ module.exports = {
         const name = url.split('/').pop().split('.')[0];
         try {
             await Git.Clone(url, path.resolve('./repos/' + name), {
-                ignoreCertErrors: 1,
+                certificateCheck: () => 1,
+                credentials: function (url, userName) {
+                    return Git.Cred.sshKeyFromAgent(userName);
+                }
             });
         } catch (e) {
             console.log(e);
