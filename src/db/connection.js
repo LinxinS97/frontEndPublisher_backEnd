@@ -8,6 +8,7 @@ module.exports = async (callback) => {
     try {
         client = await MongoClient.connect(url);
     } catch (e) {
+        console.error(e);
         throw new APIError('mongodb:connection failed', e);
     }
     console.log('database connected');
