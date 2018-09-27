@@ -40,7 +40,7 @@ module.exports = {
             //         }
             //     },
             // });
-            await repo.fetchAll(opts);
+            await repo.fetchAll('origin', opts, true);
             await repo.mergeBranches('master', 'origin/master');
         } catch (e) {
             console.error(e);
