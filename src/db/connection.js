@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 const APIError = require('../middle/rest').APIError;
 
-const url = 'mongodb://publish:123456@120.77.210.122/publisher';
+const url = 'mongodb://publisher:123456@120.77.210.122/publish';
 
 module.exports = async (callback) => {
     let client;
