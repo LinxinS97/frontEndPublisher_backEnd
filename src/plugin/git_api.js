@@ -4,7 +4,9 @@ const APIError = require('../middle/rest').APIError;
 const opts = {
     fetchOpts: {
         callbacks: {
-            certificateCheck: () => 1,
+            certificateCheck: function() {
+                return 1;
+            },
             credentials: function (url, userName) {
                 return Git.Cred.sshKeyFromAgent(userName);
             }
@@ -40,7 +42,7 @@ module.exports = {
             //         }
             //     },
             // });
-            await repo.fetchAll('origin', opts, true);
+            await repo.fetchAll('origin');
             await repo.mergeBranches('master', 'origin/master');
         } catch (e) {
             console.error(e);
