@@ -7,7 +7,7 @@ const path = require('path');
  * @param sftp sftp连接对象
  * @param remotePath 对应目标根文件夹
  */
-const getFile = async (filePath, sftp, remotePath) => {
+module.exports = async function getFile(filePath, sftp, remotePath) {
     let files;
     try{
         files = fs.readdirSync(filePath);
@@ -19,7 +19,6 @@ const getFile = async (filePath, sftp, remotePath) => {
         const stats = fs.statSync(filedir);
         if(stats.isFile()) {
             try{
-                console.log(filename);
                 await sftp.put(filedir, remotePath + '/' + filename);
             } catch(e) {
                 console.error(e);
@@ -33,5 +32,4 @@ const getFile = async (filePath, sftp, remotePath) => {
             await getFile(filedir, sftp, newPath);
         }
     }
-}
-module.exports = getFile;
+};
