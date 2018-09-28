@@ -66,7 +66,7 @@ module.exports = {
 
         await gitApi.pull(repo, body.username, body.password);
         command('cd ./repos/' + repo + ' && npm install && npm run build');
-        console.log('npm pull & build down');
+        console.error('npm pull & build down');
         await sftp.connect({
             host: '173.254.201.221',
             username: 'elpis',
