@@ -31,8 +31,8 @@ module.exports = {
     'DELETE /api/git/delete/:repo': async ctx => {
         await db.deleteOne(ctx.params.repo);
         // TODO: 删除对应的本地仓库
-        // command(`rm -rf ./repos/${ctx.params.repo}`);
-        command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
+        command(`rm -rf ./repos/${ctx.params.repo}`);
+        // command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
         // FIXME: 在对端服务器卸载对应的项目
 
         ctx.rest({
