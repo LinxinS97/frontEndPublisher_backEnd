@@ -1,5 +1,4 @@
 /node_modules
-/package-lock.json
 # 项目文件夹
 /repos
 /config.js
