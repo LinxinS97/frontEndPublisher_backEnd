@@ -1,4 +1,5 @@
 const APIError = require('../middle/rest').APIError;
+const config = require('../../config').frontEndPublisher;
 const Client = require('ssh2-sftp-client');
 const gitApi = require('../plugin/git_api');
 const command = require('../plugin/command');
@@ -68,9 +69,9 @@ module.exports = {
         command('cd ./repos/' + repo + ' && npm install && npm run build');
         console.error('npm pull & build down');
         await sftp.connect({
-            host: '173.254.201.221',
-            username: 'elpis',
-            password: 'Stranger2012',
+            host: config.host,
+            username: config.username,
+            password: config.password,
         });
         // 删除原有目录
         await sftp.client.exec('rm -rf ' + repo);

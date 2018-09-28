@@ -1,7 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 const APIError = require('../middle/rest').APIError;
+const config = require('../../config').mongodb;
 
-const url = 'mongodb://publisher:123456@120.77.210.122/publish';
+const url = `mongodb://${config.username}:${config.password}@${config.host}/publish`;
 
 module.exports = async (callback) => {
     let client;

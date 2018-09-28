@@ -31,18 +31,17 @@ module.exports = {
     async pull(name, username, psw) {
         try {
             const repo = await Git.Repository.open(path.resolve('./repos/' + name));
-            // await repo.fetchAll({
-            //     certificateCheck: () => 1,
-            //     credentials: (url, userName) => {
-            //         if(username === null && psw === null) {
-            //             return Git.Cred.sshKeyFromAgent(userName);
-            //         } else {
-            //             console.log(username, psw);
-            //             return Git.Cred.userpassPlaintextNew(username, psw);
-            //         }
-            //     },
-            // });
-            await repo.fetchAll('origin');
+            await repo.fetchAll('origin', {
+                certificateCheck: () => 1,
+                credentials: (url, userName) => {
+                    if(username === null && psw === null) {
+                        return Git.Cred.sshKeyFromAgent(userName);
+                    } else {
+                        console.log(username, psw);
+                        return Git.Cred.userpassPlaintextNew(username, psw);
+                    }
+                },
+            });
             await repo.mergeBranches('master', 'origin/master');
         } catch (e) {
             console.error(e);
