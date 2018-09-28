@@ -65,7 +65,6 @@ module.exports = {
         console.log(body.username, body.password);
 
         await gitApi.pull(repo, body.username, body.password);
-        // TODO:发布
         command('cd ./repos/' + repo + ' && npm install && npm run build');
 
         await sftp.connect({
@@ -73,6 +72,10 @@ module.exports = {
             username: 'elpis',
             password: 'Stranger2012',
         });
+        // 删除原有目录
+        const stream = await sftp.shell();
+        await stream.end('rm -rf ' + repo);
+        // 创建新目录
         await sftp.mkdir(repo);
         await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
         await sftp.end();
