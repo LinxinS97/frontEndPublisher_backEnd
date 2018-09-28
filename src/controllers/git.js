@@ -33,6 +33,8 @@ module.exports = {
         // TODO: 删除对应的本地仓库
         // command(`rm -rf ./repos/${ctx.params.repo}`);
         command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
+        // FIXME: 在对端服务器卸载对应的项目
+
         ctx.rest({
             status: 'success',
         });
@@ -73,6 +75,7 @@ module.exports = {
         });
         await sftp.mkdir(repo);
         await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
+        await sftp.end();
         ctx.rest({
             status: 'success',
             name: repo
