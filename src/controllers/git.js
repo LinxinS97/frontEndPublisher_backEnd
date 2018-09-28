@@ -73,7 +73,7 @@ module.exports = {
             password: 'Stranger2012',
         });
         // 删除原有目录
-        const stream = await sftp.shell();
+        const stream = await sftp.client.shell();
         await stream.end('rm -rf ' + repo);
         // 创建新目录
         await sftp.mkdir(repo);
