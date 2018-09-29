@@ -1,6 +1,7 @@
 const APIError = require('../middle/rest').APIError;
 const config = require('../../config').frontEndPublisher;
-const Client = require('ssh2-sftp-client');
+// const Client = require('ssh2-sftp-client');
+const Client = require('ssh2').Client;
 const gitApi = require('../plugin/git_api');
 const command = require('../plugin/command');
 const db = require('../db/git_db');
@@ -60,26 +61,23 @@ module.exports = {
     },
     // 发布一个项目
     'POST /api/git/publish': async ctx => {
-        const sftp = new Client();
-        // 删除原有目录
-        sftp.on('ready', function() {
-            console.log('Client :: ready');
-            sftp.client.exec('rm -rf ' + repo);
-        });
+        const conn = new Client();
         const body = ctx.request.body;
         const repo = body.repo;
         console.log(body.username, body.password);
 
         await gitApi.pull(repo, body.username, body.password);
         command('cd ./repos/' + repo + ' && npm install && npm run build');
-        console.error('npm pull & build down');
-        await sftp.connect({
+        console.log('npm pull & build down');
+        // 初始化连接
+        await conn.on('ready');
+        const sftp = await conn.sftp();
+        await conn.exec('rm -rf ' + repo);
+        await conn.connect({
             host: config.host,
             username: config.username,
             password: config.password,
         });
-        // 删除原有目录
-        // await sftp.client.exec('rm -rf ' + repo);
         // 创建新目录
         await sftp.mkdir(repo);
         await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
