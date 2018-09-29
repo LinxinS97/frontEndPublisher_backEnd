@@ -39,7 +39,7 @@ function fastPut(sftp, filedir, remotePath) {
     return new Promise((resolve, reject) => {
         sftp.fastPut(filedir, remotePath, function (err) {
             if (err) return reject(err);
-            return resolve(`${localPath} was successfully uploaded to ${remotePath}!`);
+            return resolve(`${filedir} was successfully uploaded to ${remotePath}!`);
         });
     });
 }
