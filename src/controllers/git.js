@@ -70,7 +70,8 @@ module.exports = {
         command('cd ./repos/' + repo + ' && npm install && npm run build');
         console.log('pull & build down');
         // 初始化连接
-        await conn.on('ready', () => {
+        conn.on('ready', () => {
+            console.log('Client :: ready');
             conn.shell(function(err, stream) {
                 if (err) throw err;
                 stream.end('rm -rf ' + repo);
