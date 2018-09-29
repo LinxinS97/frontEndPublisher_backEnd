@@ -42,7 +42,7 @@ module.exports = {
             conn.shell(function(err, stream) {
                 if (err) throw err;
                 // 删除对应目录
-                stream.end('rm -rf ' + repo);
+                stream.end('rm -rf ' + ctx.params.repo);
             });
         }).connect({
             host: config.host,
