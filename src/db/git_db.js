@@ -37,7 +37,7 @@ module.exports = {
         let res;
         await _connect(async db => {
             const collection = db.collection('GitRepo');
-            res = await collection.findOneAndDelete({ repoName: name});
+            res = await collection.findOneAndDelete({ repoName: name });
         });
         return res;
     }

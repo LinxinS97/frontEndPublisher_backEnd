@@ -44,6 +44,10 @@ module.exports = {
                 // 删除对应目录
                 stream.end('rm -rf ' + repo);
             });
+        }).connect({
+            host: config.host,
+            username: config.username,
+            password: config.password,
         });
         ctx.rest({
             status: 'success',
@@ -94,7 +98,7 @@ module.exports = {
                     await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
                     await sftp.end();
                     console.log('transfer down');
-                    return resolve();
+                    resolve();
                 });
             }).connect({
                 host: config.host,

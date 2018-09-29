@@ -18,9 +18,6 @@ module.exports = async function getFile(filePath, sftp, remotePath) {
         let filedir = path.join(filePath, filename);
         const stats = fs.statSync(filedir);
         if(stats.isFile()) {
-            // await sftp.fastPut(filedir, remotePath + '/' + filename, (err) => {
-            //     if(err) throw new APIError('file put error:can not put file', err);
-            // });
             await fastPut(sftp, filedir, remotePath + '/' + filename);
             console.log(filedir);
         }
