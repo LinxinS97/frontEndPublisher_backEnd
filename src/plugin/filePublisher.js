@@ -21,7 +21,7 @@ module.exports = async function getFile(filePath, sftp, remotePath) {
             sftp.fastPut(filedir, remotePath + '/' + filename, (err) => {
                 if(err) throw new APIError('file put error:can not put file', err);
             });
-            console.log(filedir, newPath);
+            console.log(filedir);
         }
         if(stats.isDirectory()){
             // 更新目录
