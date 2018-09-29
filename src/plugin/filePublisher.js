@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-
+const APIError = require('../middle/rest').APIError;
 /**
  * 文件遍历方法
  * @param filePath 需要遍历的文件路径
@@ -18,11 +18,10 @@ module.exports = async function getFile(filePath, sftp, remotePath) {
         let filedir = path.join(filePath, filename);
         const stats = fs.statSync(filedir);
         if(stats.isFile()) {
-            try{
-                await sftp.put(filedir, remotePath + '/' + filename);
-            } catch(e) {
-                console.error(e);
-            }
+            sftp.fastPut(filedir, remotePath + '/' + filename, (err) => {
+                if(err) throw new APIError('file put error:can not put file', err);
+            });
+            console.log(filedir, newPath);
         }
         if(stats.isDirectory()){
             // 更新目录
