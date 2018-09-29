@@ -64,16 +64,17 @@ module.exports = {
         const conn = new Client();
         const body = ctx.request.body;
         const repo = body.repo;
+        let sftp = null;
         console.log(body.username, body.password);
 
         await gitApi.pull(repo, body.username, body.password);
         command('cd ./repos/' + repo + ' && npm install && npm run build');
-        console.log('npm pull & build down');
+        console.log('pull & build down');
         // 初始化连接
-        await conn.on('ready');
-        const sftp = await conn.sftp();
-        await conn.exec('rm -rf ' + repo);
-        await conn.connect({
+        await conn.on('ready', async () => {
+            sftp = await conn.sftp();
+            await conn.exec('rm -rf ' + repo);
+        }).connect({
             host: config.host,
             username: config.username,
             password: config.password,
