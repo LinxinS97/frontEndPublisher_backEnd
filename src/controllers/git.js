@@ -64,29 +64,30 @@ module.exports = {
         const conn = new Client();
         const body = ctx.request.body;
         const repo = body.repo;
-        let sftp = null;
         console.log(body.username, body.password);
 
         await gitApi.pull(repo, body.username, body.password);
         command('cd ./repos/' + repo + ' && npm install && npm run build');
         console.log('pull & build down');
         // 初始化连接
-        await conn.on('ready', async () => {
-            await conn.sftp((err, s) => {
-                if (err) throw new APIError('controller:sftp connection error', err);
-                sftp = s;
-            });
-            await conn.shell(function(err, stream) {
+        await conn.on('ready', () => {
+            conn.shell(function(err, stream) {
                 if (err) throw err;
                 stream.end('rm -rf ' + repo);
-            });
-            // 创建新目录
-            await sftp.mkdir(repo);
-            await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
-            await sftp.end();
-            ctx.rest({
-                status: 'success',
-                name: repo
+            }).then(() => {
+                conn.sftp((err, sftp) => {
+                    if (err) throw new APIError('controller:sftp connection error', err);
+                    return sftp;
+                }).then(async sftp => {
+                    // 创建新目录
+                    await sftp.mkdir(repo);
+                    await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
+                    await sftp.end();
+                    ctx.rest({
+                        status: 'success',
+                        name: repo
+                    });
+                });
             });
         }).connect({
             host: config.host,
