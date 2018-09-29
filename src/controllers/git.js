@@ -72,7 +72,10 @@ module.exports = {
         console.log('pull & build down');
         // 初始化连接
         await conn.on('ready', async () => {
-            sftp = await conn.sftp();
+            await conn.sftp((err, s) => {
+                if (err) throw new APIError('controller:sftp connection error', err);
+                sftp = s;
+            });
             conn.shell(function(err, stream) {
                 if (err) throw err;
                 stream.end('rm -rf ' + repo);
