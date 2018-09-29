@@ -58,7 +58,7 @@ module.exports = {
     },
     // 获取所有专题主项目下的专题子项目
     'GET /api/git/getAllSpecial/:name': async ctx => {
-        
+
     },
     // 获取当前项目所有提交
     'GET /api/git/commits/:repo': async ctx => {
@@ -94,7 +94,7 @@ module.exports = {
                     await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
                     await sftp.end();
                     console.log('transfer down');
-                    resolve();
+                    return resolve();
                 });
             }).connect({
                 host: config.host,

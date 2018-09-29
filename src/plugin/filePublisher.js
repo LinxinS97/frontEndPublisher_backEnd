@@ -21,7 +21,7 @@ module.exports = async function getFile(filePath, sftp, remotePath) {
             // await sftp.fastPut(filedir, remotePath + '/' + filename, (err) => {
             //     if(err) throw new APIError('file put error:can not put file', err);
             // });
-            await fastPut(sftp, filedir, remotePath + '/' + filename)
+            await fastPut(sftp, filedir, remotePath + '/' + filename);
             console.log(filedir);
         }
         if(stats.isDirectory()){
@@ -41,7 +41,7 @@ function fastPut(sftp, filedir, remotePath) {
             if (err){
                 return reject(err);
             }
-            return resolve(`${localPath} was successfully uploaded to ${remotePath}!`);
+            return resolve(`${filedir} was successfully uploaded to ${remotePath}!`);
         });
     });
 }
