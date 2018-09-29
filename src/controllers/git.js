@@ -37,22 +37,19 @@ module.exports = {
         command(`rm -rf ./repos/${ctx.params.repo}`);
         // command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
         // FIXME: 在对端服务器卸载对应的项目
-        new Promise((resolve, reject) => {
-            conn.on('ready', () => {
-                console.log('Client :: ready');
-                conn.exec('rm -rf ' + ctx.params.repo, function(err, stream) {
-                    if (err) throw err;
-                    resolve();
-                });
-            }).connect({
-                host: config.host,
-                username: config.username,
-                password: config.password,
+        conn.on('ready', () => {
+            console.log('Client :: ready');
+            conn.exec('rm -rf ' + ctx.params.repo, function(err, stream) {
+                if (err) throw err;
+                resolve();
             });
-        }).then(() => {
-            ctx.rest({
-                status: 'success',
-            });
+        }).connect({
+            host: config.host,
+            username: config.username,
+            password: config.password,
+        });
+        ctx.rest({
+            status: 'success',
         });
     },
     // 获取所有主项目
