@@ -85,7 +85,7 @@ module.exports = {
             console.log('Client :: ready');
             new Promise((resolve, reject) => {
                 conn.exec('rm -rf ' + repo, function(err, stream) {
-                    if (err) reject(err);
+                    if (err) reject(new APIError('controller:sftp connection error', err));
                     // 删除原目录
                     stream.end('rm -rf ' + repo);
                     console.log('remove down');
@@ -99,7 +99,6 @@ module.exports = {
                     await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
                     await sftp.end();
                     console.log('transfer down');
-                    resolve();
                 });
             });
         }).connect({
