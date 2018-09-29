@@ -37,20 +37,22 @@ module.exports = {
         command(`rm -rf ./repos/${ctx.params.repo}`);
         // command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
         // FIXME: 在对端服务器卸载对应的项目
-        conn.on('ready', () => {
-            console.log('Client :: ready');
-            conn.shell(function(err, stream) {
-                if (err) throw err;
-                // 删除对应目录
-                stream.end('rm -rf ' + ctx.params.repo);
+        new Promise((resolve, reject) => {
+            conn.on('ready', () => {
+                console.log('Client :: ready');
+                conn.exec('rm -rf ' + ctx.params.repo, function(err, stream) {
+                    if (err) throw err;
+                    resolve();
+                });
+            }).connect({
+                host: config.host,
+                username: config.username,
+                password: config.password,
             });
-        }).connect({
-            host: config.host,
-            username: config.username,
-            password: config.password,
-        });
-        ctx.rest({
-            status: 'success',
+        }).then(() => {
+            ctx.rest({
+                status: 'success',
+            });
         });
     },
     // 获取所有主项目
@@ -82,15 +84,17 @@ module.exports = {
         command('cd ./repos/' + repo + ' && npm install && npm run build');
         console.log('pull & build down');
         // 初始化连接
-        new Promise((resolve, reject) => {
-            conn.on('ready', () => {
-                console.log('Client :: ready');
-                conn.shell(function(err, stream) {
+        conn.on('ready', () => {
+            console.log('Client :: ready');
+            new Promise((resolve, reject) => {
+                conn.exec('rm -rf ' + repo, function(err, stream) {
                     if (err) reject(err);
                     // 删除原目录
                     stream.end('rm -rf ' + repo);
                     console.log('remove down');
+                    resolve();
                 });
+            }).then(() => {
                 conn.sftp(async (err, sftp) => {
                     if (err) reject(new APIError('controller:sftp connection error', err));
                     // 创建新目录
@@ -100,16 +104,15 @@ module.exports = {
                     console.log('transfer down');
                     resolve();
                 });
-            }).connect({
-                host: config.host,
-                username: config.username,
-                password: config.password,
             });
-        }).then(() => {
-            ctx.rest({
-                status: 'success',
-                name: repo
-            });
+        }).connect({
+            host: config.host,
+            username: config.username,
+            password: config.password,
+        });
+        ctx.rest({
+            status: 'success',
+            name: repo
         });
     }
 }
