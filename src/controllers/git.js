@@ -76,22 +76,22 @@ module.exports = {
                 if (err) throw new APIError('controller:sftp connection error', err);
                 sftp = s;
             });
-            conn.shell(function(err, stream) {
+            await conn.shell(function(err, stream) {
                 if (err) throw err;
                 stream.end('rm -rf ' + repo);
+            });
+            // 创建新目录
+            await sftp.mkdir(repo);
+            await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
+            await sftp.end();
+            ctx.rest({
+                status: 'success',
+                name: repo
             });
         }).connect({
             host: config.host,
             username: config.username,
             password: config.password,
-        });
-        // 创建新目录
-        await sftp.mkdir(repo);
-        await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
-        await sftp.end();
-        ctx.rest({
-            status: 'success',
-            name: repo
         });
     }
 }
