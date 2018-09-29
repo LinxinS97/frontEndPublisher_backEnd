@@ -73,7 +73,10 @@ module.exports = {
         // 初始化连接
         await conn.on('ready', async () => {
             sftp = await conn.sftp();
-            await conn.exec('rm -rf ' + repo);
+            conn.shell(function(err, stream) {
+                if (err) throw err;
+                stream.end('rm -rf ' + repo);
+            });
         }).connect({
             host: config.host,
             username: config.username,
