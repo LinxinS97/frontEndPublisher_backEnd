@@ -85,6 +85,7 @@ module.exports = {
                     if (err) reject(err);
                     // 删除原目录
                     stream.end('rm -rf ' + repo);
+                    console.log('remove down');
                 });
                 conn.sftp(async (err, sftp) => {
                     if (err) reject(new APIError('controller:sftp connection error', err));
@@ -92,6 +93,7 @@ module.exports = {
                     await sftp.mkdir(repo);
                     await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
                     await sftp.end();
+                    console.log('transfer down');
                     resolve();
                 });
             }).connect({
