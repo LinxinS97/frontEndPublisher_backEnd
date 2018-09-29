@@ -76,7 +76,7 @@ module.exports = {
                 if (err) throw err;
                 stream.end('rm -rf ' + repo);
             });
-            conn.sftp((err, sftp) => {
+            conn.sftp(async (err, sftp) => {
                 if (err) throw new APIError('controller:sftp connection error', err);
                 // 创建新目录
                 await sftp.mkdir(repo);
