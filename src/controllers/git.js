@@ -75,19 +75,16 @@ module.exports = {
             conn.shell(function(err, stream) {
                 if (err) throw err;
                 stream.end('rm -rf ' + repo);
-            }).then(() => {
-                conn.sftp((err, sftp) => {
-                    if (err) throw new APIError('controller:sftp connection error', err);
-                    return sftp;
-                }).then(async sftp => {
-                    // 创建新目录
-                    await sftp.mkdir(repo);
-                    await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
-                    await sftp.end();
-                    ctx.rest({
-                        status: 'success',
-                        name: repo
-                    });
+            });
+            conn.sftp((err, sftp) => {
+                if (err) throw new APIError('controller:sftp connection error', err);
+                // 创建新目录
+                await sftp.mkdir(repo);
+                await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
+                await sftp.end();
+                ctx.rest({
+                    status: 'success',
+                    name: repo
                 });
             });
         }).connect({
