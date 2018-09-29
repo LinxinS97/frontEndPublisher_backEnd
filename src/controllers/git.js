@@ -31,12 +31,20 @@ module.exports = {
     },
     // 删除一个项目
     'DELETE /api/git/delete/:repo': async ctx => {
+        const conn = new Client();
         await db.deleteOne(ctx.params.repo);
         // TODO: 删除对应的本地仓库
         command(`rm -rf ./repos/${ctx.params.repo}`);
         // command('rmdir /s/q ' + path.resolve('./repos/' + ctx.params.repo));
         // FIXME: 在对端服务器卸载对应的项目
-
+        conn.on('ready', () => {
+            console.log('Client :: ready');
+            conn.shell(function(err, stream) {
+                if (err) throw err;
+                // 删除对应目录
+                stream.end('rm -rf ' + repo);
+            });
+        });
         ctx.rest({
             status: 'success',
         });
@@ -70,27 +78,32 @@ module.exports = {
         command('cd ./repos/' + repo + ' && npm install && npm run build');
         console.log('pull & build down');
         // 初始化连接
-        conn.on('ready', () => {
-            console.log('Client :: ready');
-            conn.shell(function(err, stream) {
-                if (err) throw err;
-                stream.end('rm -rf ' + repo);
-            });
-            conn.sftp(async (err, sftp) => {
-                if (err) throw new APIError('controller:sftp connection error', err);
-                // 创建新目录
-                await sftp.mkdir(repo);
-                await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
-                await sftp.end();
-                ctx.rest({
-                    status: 'success',
-                    name: repo
+        new Promise((resolve, reject) => {
+            conn.on('ready', () => {
+                console.log('Client :: ready');
+                conn.shell(function(err, stream) {
+                    if (err) reject(err);
+                    // 删除原目录
+                    stream.end('rm -rf ' + repo);
                 });
+                conn.sftp(async (err, sftp) => {
+                    if (err) reject(new APIError('controller:sftp connection error', err));
+                    // 创建新目录
+                    await sftp.mkdir(repo);
+                    await filePublisher(path.resolve('repos/' + repo + '/' + body.dir), sftp, repo + '/');
+                    await sftp.end();
+                    resolve();
+                });
+            }).connect({
+                host: config.host,
+                username: config.username,
+                password: config.password,
             });
-        }).connect({
-            host: config.host,
-            username: config.username,
-            password: config.password,
+        }).then(() => {
+            ctx.rest({
+                status: 'success',
+                name: repo
+            });
         });
     }
 }
