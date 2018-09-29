@@ -28,7 +28,7 @@ module.exports = async function getFile(filePath, sftp, remotePath) {
             // 更新目录
             let newPath = remotePath + filedir.split(filePath)[1];
             console.log(filedir, newPath);
-            await mkdir(newPath);
+            await sftp.mkdir(newPath);
             await getFile(filedir, sftp, newPath);
         }
     }
@@ -38,18 +38,10 @@ module.exports = async function getFile(filePath, sftp, remotePath) {
 function fastPut(sftp, filedir, remotePath) {
     return new Promise((resolve, reject) => {
         sftp.fastPut(filedir, remotePath, function (err) {
-            if (err) return reject(err);
-            return resolve(`${filedir} was successfully uploaded to ${remotePath}!`);
+            if (err){
+                return reject(err);
+            }
+            return resolve(`${localPath} was successfully uploaded to ${remotePath}!`);
         });
     });
-}
-
-// 用promise重写mkdir
-function mkdir(sftp, newPath) {
-    return new Promise((resolve, reject) => {
-        sftp.mkdir(newPath, err => {
-            if(err) return reject(err);
-            return resolve(`${newPath} directory has been created`);
-        });
-    })
 }
